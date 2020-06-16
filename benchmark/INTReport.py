@@ -6,7 +6,7 @@ import argparse
 class TelemetryReport(Packet):
 
     name = "INT telemetry report"
-    
+
     # default value a for telemetry report with INT
     fields_desc = [ BitField("ver" , 1 , 4),
         BitField("nProto", 0, 4),
@@ -51,19 +51,19 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='INT Telemetry Report pkt gen.')
     parser.add_argument("-t1", "--test1", action='store_true',
-        help="Gen pcaps for Test 1")    
+        help="Gen pcaps for Test 1")
     parser.add_argument("-t2", "--test2", action='store_true',
-        help="Gen pcaps for Test 2")    
+        help="Gen pcaps for Test 2")
     parser.add_argument("-t3", "--test3", action='store_true',
-        help="Gen pcaps for Test 3")    
+        help="Gen pcaps for Test 3")
     parser.add_argument("-t4", "--test4", action='store_true',
-        help="Gen pcaps for Test 4")    
+        help="Gen pcaps for Test 4")
     parser.add_argument("-t5", "--test_event_detection", action='store_true',
-        help="Test out of interval")    
+        help="Test out of interval")
     parser.add_argument("-t6", "--test_onos_collector", action='store_true',
         help="Test collector from ONOS P4 group")
     parser.add_argument("-t7", "--test_event_correctness", action='store_true',
-        help="Test the correctness of event detection")    
+        help="Test the correctness of event detection")
     args = parser.parse_args()
 
     # p_3sw_8d = []
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     if args.test1:
         n_sw = 6
         n_flows = [10, 100, 500, 1000, 2000, 5000]
-        for n_fl in n_flows:    
+        for n_fl in n_flows:
             p=[]
             for i in range(0, n_fl):
                 p.append(Ether()/ \
@@ -277,7 +277,7 @@ if __name__ == "__main__":
             wrpcap("pcaps/t4_{0}sw_{1}fl_{2}event_all.pcap".format(n_sw, n_fl, n_event), p)
             print "Done: t4_{0}sw_{1}fl_{2}event_all.pcap".format(n_sw, n_fl, n_event)
 
-    
+
     # test event_detection
     if args.test_event_detection:
         p0 = Ether()/ \
@@ -292,7 +292,7 @@ if __name__ == "__main__":
                 5, 2<<16| 3, 4, 5<<16| 6, 7, 1524234560, 5<<16| 10, 1,
                 6, 2<<16| 3, 4, 5<<16| 6, 7, 1524234560, 5<<16| 10, 1],
                 originDSCP=14)
-        
+
         p1 = Ether()/ \
             IP(tos=0x17<<2)/ \
             UDP(sport=5000, dport=54321)/ \
@@ -306,7 +306,7 @@ if __name__ == "__main__":
                 6, 2<<16| 3, 4, 5<<16| 6, 7, 1524234560, 5<<16| 10, 1],
                 originDSCP=14)
 
-        iface = "int_veth_0" 
+        iface = "veth_0"
 
         try:
             while 1:
@@ -314,10 +314,10 @@ if __name__ == "__main__":
                 time.sleep(5)
                 sendp(p1, iface=iface)
                 time.sleep(5)
-        
+
         except KeyboardInterrupt:
             pass
-        
+
     # test onos collector
     if args.test_onos_collector:
         p0 = Ether(dst="52:54:00:d5:81:bb")/ \
@@ -332,7 +332,7 @@ if __name__ == "__main__":
                 5, 2<<16| 3, 4, 5<<16| 6, 7, 1524234560, 5<<16| 10, 1,
                 6, 2<<16| 3, 4, 5<<16| 6, 7, 1524234560, 5<<16| 10, 1],
                 originDSCP=14)
-        
+
 
         # wrpcap("pcaps/test_onos_collector.pcap", p0*10)
 
@@ -341,10 +341,10 @@ if __name__ == "__main__":
         #     while 1:
         #         sendp(p0, iface=iface)
         #         time.sleep(1)
-        
+
         # except KeyboardInterrupt:
         #     pass
-    
+
         n_sws = [5]
         n_fl = 10
         for n_sw in n_sws:
@@ -373,7 +373,7 @@ if __name__ == "__main__":
         p = []
         n_sw = 3
         lats = [200, 202, 196, 223, 212, 215, 198, 218, 186, 186, 202, 186, 202, 221, 185, 225, 186, 269, 211, 196, 252, 239, 193, 209, 235, 192, 756, 465, 488, 484, 490, 452, 438, 483, 448, 439, 439, 465, 458, 351, 249, 213, 249, 213, 186, 187, 199, 245, 206, 199, 225, 398, 233, 300, 241, 205, 199, 248, 215, 234, 226, 239, 193, 193, 185, 203, 186, 190, 185, 184, 246, 218, 182, 234, 229, 249, 209, 247, 250, 195, 201, 239, 222, 234, 272, 247, 213, 171, 182, 239, 174, 832, 224, 234, 238, 230, 238, 192, 222, 232]
-        
+
         for i, lat in enumerate(lats):
             INTdata = [4, 40, (i+1)*1e6, 5, 41, (i+1)*1e6, 6, lat, (i+1)*1e6]
             p.append(Ether()/ \
@@ -386,7 +386,7 @@ if __name__ == "__main__":
                         INT(insCnt=3, totalHopCnt=n_sw, ins=(1<<7|1<<5|1<<2)<<8,
                             INTMetadata= INTdata,
                             originDSCP=14))
-        
+
 
         iface = "vtap0"
 
@@ -394,6 +394,6 @@ if __name__ == "__main__":
         #   sendp(p0, iface=iface)
         #         time.sleep(0.1)
 
-        
+
         wrpcap("pcaps/t7.pcap", p)
         print "Done: t7.pcap"
