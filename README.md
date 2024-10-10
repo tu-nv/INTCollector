@@ -9,7 +9,7 @@ Currently, INTCollector supports [Telemetry report v1.0](https://github.com/p4la
 * Install `bcc` package from https://github.com/iovisor/bcc. Check out and install release v0.15.0.
 * Clone this repo
    ``` shell
-      git clone https://gitlab.com/tunv_ebpf/BPFCollector.git
+      git clone https://github.com/tu-nv/INTCollector.git
    ```
 * Install requirements
    ``` shell
