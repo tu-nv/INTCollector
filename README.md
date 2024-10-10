@@ -1,12 +1,12 @@
 # INTCollector
-A high-performance collector to process INT Telemetry reports, and send data to database servers such as Prometheus and InfluxDB.
+A high-performance collector to process INT Telemetry reports, and send data to database servers such as Prometheus and InfluxDB. Official mirror from the original gitlab repo [link](https://gitlab.com/tunv_ebpf/BPFCollector).
 Currently, INTCollector supports [Telemetry report v1.0](https://github.com/p4lang/p4-applications/tree/master/docs), and [INT spec v1.0](https://github.com/p4lang/p4-applications/tree/master/docs) with TCP/UDP encapsulation.
 `INTCollector` use [eBPF](https://www.iovisor.org/technology/ebpf) and [XDP](https://www.iovisor.org/technology/xdp), which require recent linux kernel. For best practice, kernel version >= v4.14 should be used.
 # Installation
 ## Collector setup
 
 * Install Ubuntu VM. We only tested INTCollector with Ubuntu 18.04 64 bit with kernel v4.15. Both python2 and python3 should work.
-* Install `bcc` package from https://github.com/iovisor/bcc.
+* Install `bcc` package from https://github.com/iovisor/bcc. Check out and install release v0.15.0.
 * Clone this repo
    ``` shell
       git clone https://gitlab.com/tunv_ebpf/BPFCollector.git
@@ -57,6 +57,8 @@ End to end tests for InfluxDB only. InfluxDB needs to run in localhost.
    sudo pip3 install pytest
    sudo python3 -m pytest -v
 ```
+# ONOS Intergration
+For an end-to-end demo of Inband-Network Telemetry with INTCollector, ONOS, and P4, checkout the ONOS wiki [link](https://wiki.onosproject.org/display/ONOS/In-band+Network+Telemetry+(INT)+with+ONOS+and+P4).
 
 # Pulication
 - N. V. Tu, J. Hyun, G. Y. Kim, J. Yoo and J. W. Hong, "INTCollector: A High-performance Collector for In-band Network Telemetry," *2018 14th International Conference on Network and Service Management (CNSM)*, Rome, 2018, pp. 10-18.
